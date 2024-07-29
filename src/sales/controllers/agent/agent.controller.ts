@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { AgentService } from '../../services/agent/agent.service';
 import { Agent } from '../../models/agent.entity';
@@ -21,17 +20,18 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from './../../../auth/guards/jwt-auth.guard';
+import { Auth } from '../../../auth/decorators/auth.decorator';
+import { AGENT_ROLES } from '../../../auth/constants/roles.constants';
 
 @ApiTags('Agents')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 @Controller('/api/agents')
 export class AgentController {
   constructor(private agentService: AgentService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all agents' })
+  @Auth(...AGENT_ROLES)
+  @ApiOperation({ summary: 'Get all agents', description:  `Required roles: ${AGENT_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Get an array with all agents',
@@ -61,7 +61,8 @@ export class AgentController {
   }
 
   @Get(':agentCode')
-  @ApiOperation({ summary: 'Get agent by agentCode with its customers' })
+  @Auth(...AGENT_ROLES)
+  @ApiOperation({ summary: 'Get agent by agentCode with its customers', description:  `Required roles: ${AGENT_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Agent data get by agentCode',
@@ -110,7 +111,8 @@ export class AgentController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create a new agent' })
+  @Auth(...AGENT_ROLES)
+  @ApiOperation({ summary: 'Create a new agent', description:  `Required roles: ${AGENT_ROLES}` })
   @ApiBody({ type: CreateAgentDto })
   @ApiResponse({
     status: 201,
@@ -142,7 +144,8 @@ export class AgentController {
   }
 
   @Patch(':agentCode')
-  @ApiOperation({ summary: 'Update an existing agents' })
+  @Auth(...AGENT_ROLES)
+  @ApiOperation({ summary: 'Update an existing agents', description:  `Required roles: ${AGENT_ROLES}` })
   @ApiBody({ type: UpdateAgentDto })
   @ApiResponse({
     status: 200,
@@ -163,7 +166,8 @@ export class AgentController {
   }
 
   @Delete(':agentCode')
-  @ApiOperation({ summary: 'Delete an existing agents by its agentCode' })
+  @Auth(...AGENT_ROLES)
+  @ApiOperation({ summary: 'Delete an existing agents by its agentCode', description:  `Required roles: ${AGENT_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Agent successfully deleted',

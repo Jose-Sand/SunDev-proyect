@@ -6,12 +6,12 @@ import {
   HttpStatus,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
-import { LocalAuthGuard } from './../guards/local-auth.guard';
 import { AuthService } from './../services/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Auth } from '../decorators/auth.decorator';
+import { RolesEnum } from '../enums/roles.enum';
 
 @ApiTags('Auth')
 @Controller('api/auth')
@@ -20,6 +20,7 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(201)
+  @ApiOperation({ summary: 'Create a user', description:  `Required roles: ${RolesEnum.GUEST}` })
   @ApiResponse({
     status: 201,
     description: 'Register a new user',
@@ -49,8 +50,9 @@ export class AuthController {
   }
 
   @Post('login')
-  @UseGuards(LocalAuthGuard)
+  @Auth(RolesEnum.GUEST)
   @HttpCode(200)
+  @ApiOperation({ summary: 'Login User', description:  `Required roles: ${RolesEnum.GUEST}` })
   @ApiBody({
     schema: {
       example: {
@@ -80,6 +82,7 @@ export class AuthController {
     },
   })
   async login(@Req() req) {
+    console.log('req.user', req.user)
     return this.authService.login(req.user);
   }
 }

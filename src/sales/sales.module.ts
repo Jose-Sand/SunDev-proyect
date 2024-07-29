@@ -9,9 +9,10 @@ import { OrderController } from './controllers/order/order.controller';
 import { AgentService } from './services/agent/agent.service';
 import { CustomerService } from './services/customer/customer.service';
 import { OrderService } from './services/order/order.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Agent, Customer, Order])],
+  imports: [TypeOrmModule.forFeature([Agent, Customer, Order]), AuthModule],
   controllers: [AgentController, CustomerController, OrderController],
   providers: [AgentService, CustomerService, OrderService],
 })

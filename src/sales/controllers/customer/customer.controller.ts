@@ -22,16 +22,18 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from './../../../auth/guards/jwt-auth.guard';
+import { Auth } from '../../../auth/decorators/auth.decorator';
+import { CUSTOMER_ROLES } from '../../../auth/constants/roles.constants';
 
 @ApiTags('Customers')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 @Controller('/api/customers')
 export class CustomerController {
   constructor(private customerService: CustomerService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all customers' })
+  @Auth(...CUSTOMER_ROLES)
+  @ApiOperation({ summary: 'Get all customers', description:  `Required roles: ${CUSTOMER_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Get an array with all customers',
@@ -66,7 +68,8 @@ export class CustomerController {
   }
 
   @Get(':custCode')
-  @ApiOperation({ summary: 'Get customer by custCode with its agent' })
+  @Auth(...CUSTOMER_ROLES)
+  @ApiOperation({ summary: 'Get customer by custCode with its agent', description:  `Required roles: ${CUSTOMER_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Customer data by custCode',
@@ -113,7 +116,8 @@ export class CustomerController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create a new customer' })
+  @Auth(...CUSTOMER_ROLES)
+  @ApiOperation({ summary: 'Create a new customer', description:  `Required roles: ${CUSTOMER_ROLES}` })
   @ApiBody({ type: CreateCustomerDto })
   @ApiResponse({
     status: 201,
@@ -153,7 +157,8 @@ export class CustomerController {
   }
 
   @Patch(':custCode')
-  @ApiOperation({ summary: 'Update an existing customer' })
+  @Auth(...CUSTOMER_ROLES)
+  @ApiOperation({ summary: 'Update an existing customer', description:  `Required roles: ${CUSTOMER_ROLES}` })
   @ApiBody({ type: UpdateCustomerDto })
   @ApiResponse({
     status: 200,
@@ -185,7 +190,8 @@ export class CustomerController {
   }
 
   @Delete(':custCode')
-  @ApiOperation({ summary: 'Delete an existing customer by its custCode' })
+  @Auth(...CUSTOMER_ROLES)
+  @ApiOperation({ summary: 'Delete an existing customer by its custCode', description:  `Required roles: ${CUSTOMER_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Customer successfully deleted',

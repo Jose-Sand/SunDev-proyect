@@ -29,17 +29,18 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from './../../../auth/guards/jwt-auth.guard';
+import { Auth } from '../../../auth/decorators/auth.decorator';
+import { ADMIN_ROLES } from '../../../auth/constants/roles.constants';
 
 @ApiTags('Orders')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 @Controller('/api/orders')
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @Get('total-amount-by-customer')
-  @ApiOperation({ summary: 'Get total amount of orders group by customer' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Get total amount of orders group by customer', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Get an array with sum of all orders grouped by customer',
@@ -61,7 +62,8 @@ export class OrderController {
   }
 
   @Get('total-amount-by-agent')
-  @ApiOperation({ summary: 'Get total amount of orders group by agent' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Get total amount of orders group by agent', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Get an array with sum of all orders grouped by agent',
@@ -83,7 +85,8 @@ export class OrderController {
   }
 
   @Get('total-amount-by-country')
-  @ApiOperation({ summary: 'Get total amount of orders group by country' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Get total amount of orders group by country', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Get an array with sum of all orders grouped by country',
@@ -105,7 +108,8 @@ export class OrderController {
   }
 
   @Get('/')
-  @ApiOperation({ summary: 'Get all orders (paginated)' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Get all orders (paginated)', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiQuery({ name: 'page', required: false })
   @ApiResponse({
     status: 200,
@@ -199,7 +203,8 @@ export class OrderController {
   }
 
   @Get(':ordNum')
-  @ApiOperation({ summary: 'Get an order by ordNum' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Get an order by ordNum', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Order data by ordNum',
@@ -253,7 +258,8 @@ export class OrderController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create a new order' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Create a new order', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiBody({ type: CreateOrderDto })
   @ApiResponse({
     status: 201,
@@ -286,7 +292,8 @@ export class OrderController {
   }
 
   @Patch(':ordNum')
-  @ApiOperation({ summary: 'Update an existing order' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Update an existing order', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Order successfully updated',
@@ -317,8 +324,9 @@ export class OrderController {
   }
 
   @Delete(':ordNum')
-  @ApiOperation({ summary: 'Delete an existing order by its ordNum' })
-  @ApiOperation({ summary: 'Delete an existing customer by its custCode' })
+  @Auth(...ADMIN_ROLES)
+  @ApiOperation({ summary: 'Delete an existing order by its ordNum', description:  `Required roles: ${ADMIN_ROLES}` })
+  @ApiOperation({ summary: 'Delete an existing customer by its custCode', description:  `Required roles: ${ADMIN_ROLES}` })
   @ApiResponse({
     status: 200,
     description: 'Order successfully deleted',

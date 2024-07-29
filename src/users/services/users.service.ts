@@ -4,10 +4,14 @@ import { Repository } from 'typeorm';
 import { User } from '../models/user.entity';
 import { CreateUserDto } from '../../auth/controllers/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
+import { Role } from '../models/roles.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private repository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private repository: Repository<User>, 
+    @InjectRepository(Role) private roleRepository: Repository<Role>,
+  ) {}
 
   async findOneByEmail(email: string): Promise<User | undefined> {
     return this.repository.findOne({
@@ -19,7 +23,11 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     createUserDto.password = await this.encryptPassword(createUserDto.password);
-    const user: User = await this.repository.create(createUserDto);
+    const role = await this.roleRepository.findOneBy({ name: createUserDto.roleName });
+    const user: User = this.repository.create({
+      ...createUserDto,
+      role,
+    });
     return await this.repository.save(user);
   }
 

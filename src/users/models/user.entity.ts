@@ -1,11 +1,16 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { RolesEnum } from 'src/auth/enums/roles.enum';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from './roles.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -44,6 +49,13 @@ export class User {
     nullable: false,
   })
   password: string;
+
+  @ApiProperty({
+    type: () => Role,
+  })
+  @ManyToOne(() => Role, (role) => role.users, { eager: true })
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
 
   @CreateDateColumn({
     name: 'created_at',
