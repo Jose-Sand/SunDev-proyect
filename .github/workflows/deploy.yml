@@ -47,6 +47,9 @@ jobs:
 
       - name: serverless plugin
         run: npx serverless plugin install -n serverless-offline
+      
+      - name: serverless install
+        run: npm install -g serverless@3.39.0 
 
       - name: serverless deploy
         uses: serverless/github-action@v3.2
