@@ -25,9 +25,25 @@ jobs:
       
       - name: Test the envs
         run: echo ${{ env.JWT_SECRET }}
+        env:
+          PORT: ${{ env.PORT }}
+          JWT_SECRET: ${{env.JWT_SECRET}}
+          DB_HOST: ${{env.DB_HOST}}
+          DB_PORT: ${{env.DB_PORT}}
+          DB_USER: ${{env.DB_USER}}
+          DB_PASS: ${{env.DB_PASS}}
+          DB_DATABASE: ${{env.DB_DATABASE}}
 
       - name: Run Integration tests
         run: npm run test:e2e
+        env:
+          PORT: ${{ env.PORT }}
+          JWT_SECRET: ${{env.JWT_SECRET}}
+          DB_HOST: ${{env.DB_HOST}}
+          DB_PORT: ${{env.DB_PORT}}
+          DB_USER: ${{env.DB_USER}}
+          DB_PASS: ${{env.DB_PASS}}
+          DB_DATABASE: ${{env.DB_DATABASE}}
 
       - name: serverless plugin
         run: npx serverless plugin install -n serverless-offline
