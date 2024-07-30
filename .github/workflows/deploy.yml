@@ -24,26 +24,26 @@ jobs:
         run: npm run test
       
       - name: Test the envs
-        run: echo "$JWT_SECRET"
+        run: echo ${{vars.JWT_SECRET}}
         env:
-          PORT: ${{ env.PORT }}
-          JWT_SECRET: ${{env.JWT_SECRET}}
-          DB_HOST: ${{env.DB_HOST}}
-          DB_PORT: ${{env.DB_PORT}}
-          DB_USER: ${{env.DB_USER}}
-          DB_PASS: ${{env.DB_PASS}}
-          DB_DATABASE: ${{env.DB_DATABASE}}
+          PORT: ${{ vars.PORT }}
+          JWT_SECRET: ${{vars.JWT_SECRET}}
+          DB_HOST: ${{vars.DB_HOST}}
+          DB_PORT: ${{vars.DB_PORT}}
+          DB_USER: ${{vars.DB_USER}}
+          DB_PASS: ${{vars.DB_PASS}}
+          DB_DATABASE: ${{vars.DB_DATABASE}}
 
       - name: Run Integration tests
         run: npm run test:e2e
         env:
-          PORT: ${{ env.PORT }}
-          JWT_SECRET: ${{env.JWT_SECRET}}
-          DB_HOST: ${{env.DB_HOST}}
-          DB_PORT: ${{env.DB_PORT}}
-          DB_USER: ${{env.DB_USER}}
-          DB_PASS: ${{env.DB_PASS}}
-          DB_DATABASE: ${{env.DB_DATABASE}}
+          PORT: ${{ vars.PORT }}
+          JWT_SECRET: ${{vars.JWT_SECRET}}
+          DB_HOST: ${{vars.DB_HOST}}
+          DB_PORT: ${{vars.DB_PORT}}
+          DB_USER: ${{vars.DB_USER}}
+          DB_PASS: ${{vars.DB_PASS}}
+          DB_DATABASE: ${{vars.DB_DATABASE}}
 
       - name: serverless plugin
         run: npx serverless plugin install -n serverless-offline
@@ -55,11 +55,11 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          PORT: ${{ env.PORT }}
-          JWT_SECRET: ${{env.JWT_SECRET}}
-          DB_HOST: ${{env.DB_HOST}}
-          DB_PORT: ${{env.DB_PORT}}
-          DB_USER: ${{env.DB_USER}}
-          DB_PASS: ${{env.DB_PASS}}
-          DB_DATABASE: ${{env.DB_DATABASE}}
+          PORT: ${{ vars.PORT }}
+          JWT_SECRET: ${{vars.JWT_SECRET}}
+          DB_HOST: ${{vars.DB_HOST}}
+          DB_PORT: ${{vars.DB_PORT}}
+          DB_USER: ${{vars.DB_USER}}
+          DB_PASS: ${{vars.DB_PASS}}
+          DB_DATABASE: ${{vars.DB_DATABASE}}
           # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
