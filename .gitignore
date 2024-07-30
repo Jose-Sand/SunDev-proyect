@@ -38,3 +38,5 @@ lerna-debug.log*
 .env
 ormconfig.json
 /.serverless
+
+/mysql-data

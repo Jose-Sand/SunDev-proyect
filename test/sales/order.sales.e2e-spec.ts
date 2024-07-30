@@ -10,6 +10,7 @@ import { Agent } from '../../src/sales/models/agent.entity';
 import { Customer } from '../../src/sales/models/customer.entity';
 import { Order } from '../../src/sales/models/order.entity';
 import { User } from '../../src/users/models/user.entity';
+import { Role } from '../../src/users/models/roles.entity';
 
 jest.mock('nestjs-typeorm-paginate', () => ({
   paginate: jest.fn().mockResolvedValue({
@@ -42,7 +43,16 @@ jest.mock('bcryptjs', () => {
 
 describe('SalesController (e2e)', () => {
   let app: INestApplication;
-
+  const role = {
+    id: 1,
+    name: 'admin',
+  }
+  const user = {
+    id: 1,
+    email: 'demo@demo.com',
+    password: 'demo',
+    role,
+  }
   const order = {
     ordNum: '200101',
     ordAmount: '3000',
@@ -109,7 +119,10 @@ describe('SalesController (e2e)', () => {
   const mockUserRepository = {
     findOne: jest
       .fn()
-      .mockImplementation((user) => Promise.resolve({ ...user, id: 1 })),
+      .mockImplementation(() => Promise.resolve({ ...user })),
+    findOneBy: jest
+      .fn()
+      .mockImplementation(() => Promise.resolve({ ...user })),
   };
 
   beforeEach(async () => {
@@ -129,6 +142,8 @@ describe('SalesController (e2e)', () => {
       .useValue(mockOrderRepository)
       .overrideProvider(getRepositoryToken(User))
       .useValue(mockUserRepository)
+      .overrideProvider(getRepositoryToken(Role))
+      .useValue({ findOneBy: jest.fn().mockImplementation(() => role) })
       .compile();
 
     app = moduleFixture.createNestApplication();

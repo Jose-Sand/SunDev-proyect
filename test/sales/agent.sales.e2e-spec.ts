@@ -10,6 +10,8 @@ import { Agent } from '../../src/sales/models/agent.entity';
 import { Customer } from '../../src/sales/models/customer.entity';
 import { Order } from '../../src/sales/models/order.entity';
 import { User } from '../../src/users/models/user.entity';
+import typeorm from '../../src/config/typeorm';
+import { Role } from '../../src/users/models/roles.entity';
 
 jest.mock('bcryptjs', () => {
   return {
@@ -19,6 +21,17 @@ jest.mock('bcryptjs', () => {
 
 describe('SalesController (e2e)', () => {
   let app: INestApplication;
+
+  const roleUser = {
+    id: 1,
+    name: 'admin',
+  };
+
+  const user = {
+    id: 1,
+    email: 'demo@demo.com',
+    password: 'demo',
+  }
 
   const agent = {
     agentCode: 'A001',
@@ -51,13 +64,16 @@ describe('SalesController (e2e)', () => {
   const mockUserRepository = {
     findOne: jest
       .fn()
-      .mockImplementation((user) => Promise.resolve({ ...user, id: 1 })),
+      .mockImplementation(() => Promise.resolve({ ...user, role: roleUser })),
+    findOneBy: jest
+      .fn()
+      .mockImplementation(() => Promise.resolve({ ...user, role: roleUser })),
   };
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
+        ConfigModule.forRoot({ isGlobal: true, load: [typeorm] }),
         AuthModule,
         UsersModule,
         SalesModule,
@@ -71,6 +87,8 @@ describe('SalesController (e2e)', () => {
       .useValue(mockOrderRepository)
       .overrideProvider(getRepositoryToken(User))
       .useValue(mockUserRepository)
+      .overrideProvider(getRepositoryToken(Role))
+      .useValue({ findOneBy: jest.fn().mockImplementation(() => roleUser) })
       .compile();
 
     app = moduleFixture.createNestApplication();

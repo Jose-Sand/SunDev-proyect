@@ -13,7 +13,6 @@ export class UserRoleGuard implements CanActivate {
 
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    console.log('context.getHandler()', context.getHandler())
     const validRoles = this.reflector.get<string[]>(META_ROLES, context.getHandler());
     const req = context.switchToHttp().getRequest();
     const user:JwtBody = req.user;
@@ -23,7 +22,6 @@ export class UserRoleGuard implements CanActivate {
     if(!user) throw new UnauthorizedException('User not Found');
     if(!validRoles) return true;
     if(validRoles.length === 0) return true;
-    console.log('validRoles', user);
     const isValid = validRoles.includes(user.role);
     if(!isValid) throw new UnauthorizedException(`User not allowed, only (${validRoles}) can access this route`);
     return true;

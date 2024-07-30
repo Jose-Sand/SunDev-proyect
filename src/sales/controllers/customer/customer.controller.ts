@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Customer } from '../../models/customer.entity';
 import { CustomerService } from '../../services/customer/customer.service';
@@ -21,7 +20,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from './../../../auth/guards/jwt-auth.guard';
 import { Auth } from '../../../auth/decorators/auth.decorator';
 import { CUSTOMER_ROLES } from '../../../auth/constants/roles.constants';
 

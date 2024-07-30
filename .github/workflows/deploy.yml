@@ -1,10 +1,10 @@
 name: lambda-deployment-with-github-action-test
 
-on: 
+on:
   push:
     branches:
         main # You can use any of your root or master branch name
-  
+
 jobs:
   lambda-deploy:
     runs-on: ubuntu-latest
@@ -16,14 +16,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '18.x'
-        
+
       - name: Install npm dependencies
         run: npm ci
 
       - name: Run tests
         run: npm run test
-      
-      - name: serverless pluging
+
+      - name: Run Integration tests
+        run: npm run test:e2e
+
+      - name: serverless plugin
         run: npx serverless plugin install -n serverless-offline
 
       - name: serverless deploy

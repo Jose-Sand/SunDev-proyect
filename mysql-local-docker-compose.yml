@@ -9,7 +9,4 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - 'challenge-nodejs-typescript:/var/lib/mysql'
-
-volumes:
-  challenge-nodejs-typescript:
+      - './mysql-data:/var/lib/mysql'
