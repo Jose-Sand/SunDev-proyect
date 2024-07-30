@@ -29,6 +29,9 @@ functions:
     events:
       - http:
           method: ANY
+          path: /
+      - http:
+          method: ANY
           path: /{proxy+}
 
 custom:

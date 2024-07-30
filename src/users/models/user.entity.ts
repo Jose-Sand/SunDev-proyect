@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RolesEnum } from 'src/auth/enums/roles.enum';
 import {
   Column,
   CreateDateColumn,
