@@ -24,7 +24,7 @@ jobs:
         run: npm run test
       
       - name: Test the envs
-        run: echo ${{ env.JWT_SECRET }}
+        run: echo "$JWT_SECRET"
         env:
           PORT: ${{ env.PORT }}
           JWT_SECRET: ${{env.JWT_SECRET}}
