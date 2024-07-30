@@ -20,20 +20,12 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      - name: Build application
+        run: npm run build
+
       - name: Run tests
         run: npm run test
       
-      - name: Test the envs
-        run: echo ${{vars.JWT_SECRET}}
-        env:
-          PORT: ${{ vars.PORT }}
-          JWT_SECRET: ${{vars.JWT_SECRET}}
-          DB_HOST: ${{vars.DB_HOST}}
-          DB_PORT: ${{vars.DB_PORT}}
-          DB_USER: ${{vars.DB_USER}}
-          DB_PASS: ${{vars.DB_PASS}}
-          DB_DATABASE: ${{vars.DB_DATABASE}}
-
       - name: Run Integration tests
         run: npm run test:e2e
         env:
